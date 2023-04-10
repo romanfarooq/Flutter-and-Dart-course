@@ -1,17 +1,23 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  var questionIndex = 0;
+
   void answerQuestion() {
-    if (kDebugMode) {
-      print('Answer chosen!');
-    }
+    setState(() {
+      questionIndex = questionIndex == 0 ? 1 : 0;
+    });
   }
 
   @override
@@ -27,7 +33,9 @@ class MyApp extends StatelessWidget {
         ),
         body: Column(
           children: [
-            Text(question[0]),
+            Text(
+              question[questionIndex],
+            ),
             ElevatedButton(
               onPressed: answerQuestion,
               child: const Text('Answer 1'),
