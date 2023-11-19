@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../models/transaction.dart';
 import 'package:intl/intl.dart';
+
+import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
@@ -10,7 +11,7 @@ class TransactionList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 450,
+      height: 650,
       child: ListView.builder(
         itemBuilder: (ctx, index) {
           return Card(
@@ -29,7 +30,7 @@ class TransactionList extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.all(10),
                   child: Text(
-                    '\$${transactions[index].amount}',
+                    transactions[index].amount.toStringAsFixed(2),
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
