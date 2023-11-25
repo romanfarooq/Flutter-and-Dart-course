@@ -54,10 +54,10 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return SingleChildScrollView(
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.all(5),
+        padding: EdgeInsets.fromLTRB(10, 10, 10, MediaQuery.of(context).viewInsets.bottom + 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[

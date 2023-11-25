@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import './models/transaction.dart';
 import './widgets/chart.dart';
@@ -6,6 +7,10 @@ import './widgets/new_transaction.dart';
 import './widgets/transaction_list.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+  );
   runApp(const MyApp());
 }
 
@@ -29,6 +34,11 @@ class MyApp extends StatelessWidget {
                 fontFamily: 'OpenSans',
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
+              ),
+              titleMedium: const TextStyle(
+                fontFamily: 'OpenSans',
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
               ),
               labelLarge: const TextStyle(
                 color: Colors.white,
@@ -99,6 +109,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void _startAddNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
       context: ctx,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(10),
+        ),
+      ),
       builder: (_) {
         return NewTransaction(addTransaction: _addNewTransaction);
       },
@@ -107,23 +123,33 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: const Text('Expense Planner'),
+      actions: <Widget>[
+        IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () => _startAddNewTransaction(context),
+        )
+      ],
+    );
+    final availableScreenHeight = MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top - appBar.preferredSize.height;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Expense Planner'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => _startAddNewTransaction(context),
-          )
-        ],
-      ),
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Chart(recentTransactions: _recentTransactions),
-            TransactionList(
-              transactions: _userTransactions,
-              deleteTransaction: _deleteTransaction,
+            SizedBox(
+              height: availableScreenHeight * 0.3,
+              child: Chart(
+                recentTransactions: _recentTransactions,
+              ),
+            ),
+            SizedBox(
+              height: availableScreenHeight * 0.7,
+              child: TransactionList(
+                transactions: _userTransactions,
+                deleteTransaction: _deleteTransaction,
+              ),
             ),
           ],
         ),
