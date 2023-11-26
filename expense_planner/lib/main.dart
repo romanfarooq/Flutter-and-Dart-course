@@ -116,7 +116,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       builder: (_) {
-        return NewTransaction(addTransaction: _addNewTransaction);
+        return NewTransaction(
+          addTransaction: _addNewTransaction,
+        );
       },
     );
   }
