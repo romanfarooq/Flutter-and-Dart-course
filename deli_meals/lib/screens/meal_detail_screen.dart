@@ -3,7 +3,14 @@ import 'package:flutter/material.dart';
 import '../data/dummy_data.dart';
 
 class MealDetailScreen extends StatelessWidget {
-  const MealDetailScreen({super.key});
+  const MealDetailScreen({
+    super.key,
+    required this.toggleFavorite,
+    required this.isFavorite,
+  });
+
+  final Function toggleFavorite;
+  final Function isFavorite;
 
   static const routeName = '/meal-detail';
 
@@ -39,67 +46,75 @@ class MealDetailScreen extends StatelessWidget {
     final mealId = ModalRoute.of(context)!.settings.arguments as String;
     final selectedMeal = dummyMeals.firstWhere((meal) => meal.id == mealId);
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            selectedMeal.title,
-            style: const TextStyle(
-              fontSize: 20,
-            ),
+      appBar: AppBar(
+        title: Text(
+          selectedMeal.title,
+          style: const TextStyle(
+            fontSize: 20,
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 250,
-                width: double.infinity,
-                child: Image.network(
-                  selectedMeal.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 250,
+              width: double.infinity,
+              child: Image.network(
+                selectedMeal.imageUrl,
+                fit: BoxFit.cover,
               ),
-              buildSectionTitle(context, 'Ingredients'),
-              buildContainer(
-                ListView.builder(
-                  itemBuilder: (ctx, index) => Card(
-                    color: Theme.of(context).colorScheme.primary,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 5,
-                        horizontal: 10,
-                      ),
-                      child: Text(
-                        selectedMeal.ingredients[index],
-                        style: const TextStyle(
-                          color: Colors.white,
-                        ),
+            ),
+            buildSectionTitle(context, 'Ingredients'),
+            buildContainer(
+              ListView.builder(
+                itemBuilder: (ctx, index) => Card(
+                  color: Theme.of(context).colorScheme.primary,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 5,
+                      horizontal: 10,
+                    ),
+                    child: Text(
+                      selectedMeal.ingredients[index],
+                      style: const TextStyle(
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                  itemCount: selectedMeal.ingredients.length,
                 ),
+                itemCount: selectedMeal.ingredients.length,
               ),
-              buildSectionTitle(context, 'Steps'),
-              buildContainer(
-                ListView.builder(
-                  itemBuilder: (ctx, index) => Column(
-                    children: [
-                      ListTile(
-                        leading: CircleAvatar(
-                          child: Text('# ${(index + 1)}'),
-                        ),
-                        title: Text(
-                          selectedMeal.steps[index],
-                        ),
+            ),
+            buildSectionTitle(context, 'Steps'),
+            buildContainer(
+              ListView.builder(
+                itemBuilder: (ctx, index) => Column(
+                  children: [
+                    ListTile(
+                      leading: CircleAvatar(
+                        child: Text('# ${(index + 1)}'),
                       ),
-                      const Divider(),
-                    ],
-                  ),
-                  itemCount: selectedMeal.steps.length,
+                      title: Text(
+                        selectedMeal.steps[index],
+                      ),
+                    ),
+                    const Divider(),
+                  ],
                 ),
-              )
-            ],
-          ),
-        ));
+                itemCount: selectedMeal.steps.length,
+              ),
+            )
+          ],
+        ),
+      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          isFavorite(mealId) ? Icons.star : Icons.star_border,
+        ),
+        onPressed: () => toggleFavorite(mealId),
+      ),
+    );
   }
 }
