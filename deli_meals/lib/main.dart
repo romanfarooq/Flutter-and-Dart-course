@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import './screens/categories_screen.dart';
 import './screens/category_meals_screen.dart';
 import './screens/meal_detail_screen.dart';
+import './screens/tabs_screen.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -47,14 +47,14 @@ class MyApp extends StatelessWidget {
             ),
         useMaterial3: true,
       ),
-      home: const CategoriesScreen(),
       routes: {
+        '/': (ctx) => const TabsScreen(),
         CategoryMealsScreen.routeName: (ctx) => const CategoryMealsScreen(),
         MealDetailScreen.routeName: (ctx) => const MealDetailScreen(),
       },
       onUnknownRoute: (settings) {
         return MaterialPageRoute(
-          builder: (ctx) => const CategoriesScreen(),
+          builder: (ctx) => const TabsScreen(),
         );
       },
     );
