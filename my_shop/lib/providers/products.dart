@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 import './product.dart';
 
@@ -39,6 +39,10 @@ class Products with ChangeNotifier {
   ];
 
   List<Product> get items => [..._items];
+
+  List<Product> get favoriteItems {
+    return _items.where((product) => product.isFavorite).toList();
+  }
 
   void addProduct(Product product) {
     _items.add(product);
